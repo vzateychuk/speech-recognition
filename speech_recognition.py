@@ -10,8 +10,14 @@ import json
 import wave
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from datetime import datetime
+
+# Исправление кодировки для Windows консоли
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 # Импорты для Vosk
 try:
@@ -46,6 +52,9 @@ class AudioTranscriber:
             raise ValueError(f"Неподдерживаемый движок: {self.engine}. Используйте 'vosk' или 'whisper'")
         
         print(f"Используется движок: {self.engine.upper()}")
+        
+        # Загружаем словари замен терминов один раз при инициализации
+        self.term_replacements = self.load_term_replacements()
         
         self.model = self.load_model()
         
@@ -403,6 +412,90 @@ class AudioTranscriber:
         
         return results
     
+    def load_term_replacements(self):
+        """Загрузка словаря замен терминов из файлов"""
+        replacements = {}
+        dicts_dir = Path("dicts")
+        
+        # Если директории нет - возвращаем пустой словарь
+        if not dicts_dir.exists():
+            return replacements
+        
+        # Ищем все .json файлы в директории
+        json_files = list(dicts_dir.glob("*.json"))
+        
+        if not json_files:
+            return replacements
+        
+        print(f"Загрузка словарей терминов из {dicts_dir}/...")
+        
+        for json_file in json_files:
+            try:
+                with open(json_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                
+                loaded_count = 0
+                # Поддерживаем два формата: упрощенный и полный
+                if "replacements" in data:
+                    # Упрощенный формат: {"replacements": {"wrong": "correct"}}
+                    replacements.update(data["replacements"])
+                    loaded_count = len(data["replacements"])
+                elif "contexts" in data:
+                    # Полный формат с контекстами
+                    for context_name, context_data in data["contexts"].items():
+                        if "replacements" in context_data:
+                            # Обрабатываем замены в контексте
+                            for replacement in context_data["replacements"]:
+                                if isinstance(replacement, dict) and "patterns" in replacement:
+                                    # Новый формат: patterns + priority
+                                    if replacement["patterns"]:  # Проверяем что список не пустой
+                                        for pattern in replacement["patterns"]:
+                                            replacements[pattern] = replacement["correct"]
+                                            loaded_count += 1
+                                elif isinstance(replacement, dict) and "wrong" in replacement:
+                                    # Старый формат: wrong/correct (если нет patterns)
+                                    replacements[replacement["wrong"]] = replacement["correct"]
+                                    loaded_count += 1
+                                elif isinstance(replacement, str):
+                                    # Просто строка замены
+                                    pass  # Пропускаем, нужен формат словаря
+                
+                print(f"   [OK] {json_file.name}: загружено {loaded_count} замен")
+                
+            except Exception as e:
+                print(f"[WARNING] Не удалось загрузить словарь терминов из {json_file}: {e}")
+        
+        if replacements:
+            print(f"[OK] Всего загружено замен терминов: {len(replacements)}")
+        
+        return replacements
+    
+    def postprocess_text(self, text):
+        """Постобработка текста с заменой некорректных терминов"""
+        if not self.term_replacements:
+            return text
+        
+        replacements = self.term_replacements
+        
+        # Применяем замены
+        for pattern, correct in replacements.items():
+            # Проверяем, содержит ли паттерн regex-метасимволы
+            # \b интерпретируется как один символ в JSON, поэтому ищем оба варианта
+            has_regex_chars = '\b' in pattern or '\\b' in pattern or re.search(r'[\[\]()+?*^$]', pattern)
+            
+            if has_regex_chars:
+                # Это regex паттерн
+                try:
+                    text = re.sub(pattern, correct, text, flags=re.IGNORECASE)
+                except re.error:
+                    # Если некорректный regex, применяем как обычный текст
+                    text = re.sub(r'\b' + re.escape(pattern) + r'\b', correct, text, flags=re.IGNORECASE)
+            else:
+                # Обычная замена слова с границами
+                text = re.sub(r'\b' + re.escape(pattern) + r'\b', correct, text, flags=re.IGNORECASE)
+        
+        return text
+    
     def format_results_to_markdown(self, results, original_filename):
         """Форматирование результатов в Markdown"""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -419,6 +512,8 @@ class AudioTranscriber:
             markdown += "*Текст не распознан*\n"
         else:
             full_text = " ".join([r.get('text', '') for r in results if r.get('text')])
+            # Применяем постобработку для замены терминов
+            full_text = self.postprocess_text(full_text)
             markdown += f"{full_text}\n\n"
         
         return markdown

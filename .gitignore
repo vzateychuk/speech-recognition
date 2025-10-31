@@ -41,14 +41,10 @@ ENV/
 Thumbs.db
 
 # Project specific
-.data/input/*
-!.data/input/.gitkeep
-.data/output/*
-!.data/output/.gitkeep
-.data/processed/*
-!.data/processed/.gitkeep
+.data/
 models/*
 !models/.gitkeep
+!dicts/.gitkeep
 
 
 # Temporary files
