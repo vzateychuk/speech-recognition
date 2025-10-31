@@ -1,3 +1,12 @@
 # Библиотека для распознавания речи
 vosk==0.3.45
 
+# Whisper (опционально - выберите один вариант)
+# Вариант 1: faster-whisper (требует Rust для Python 3.13)
+# faster-whisper==1.0.1
+
+# Вариант 2: openai-whisper (проще установить, но медленнее)
+# openai-whisper
+
+# Для загрузки моделей Whisper локально (опционально, для скрипта download_whisper_model.py)
+# huggingface_hub

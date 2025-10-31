@@ -14,11 +14,11 @@ pip install -r requirements.txt
 ```json
 {
   "engine": "whisper",
-  "whisper_model": "base",
-  "whisper_device": "cpu",
+  "whisper_model_path": "models/faster-whisper-base",
   "input_dir": ".data/input",
   "output_dir": ".data/output",
   "processed_dir": ".data/processed",
+  "temp_dir": ".data/temp",
   "sample_rate": 16000,
   "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac"]
 }

@@ -86,19 +86,99 @@ class AudioTranscriber:
         print("Модель Vosk успешно загружена!")
         return model
     
+    def extract_whisper_model_size(self, model_path):
+        """
+        Автоматическое определение размера модели Whisper из пути.
+        Примеры:
+        - models/faster-whisper-base -> base
+        - models/faster-whisper-small -> small
+        - faster-whisper-tiny -> tiny
+        """
+        model_name = Path(model_path).name
+        
+        # Паттерны для определения размера модели
+        patterns = [
+            r'faster-whisper-(tiny|base|small|medium|large)',
+            r'whisper-(tiny|base|small|medium|large)',
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, model_name, re.IGNORECASE)
+            if match:
+                return match.group(1).lower()
+        
+        return None
+    
     def load_whisper_model(self):
-        """Загрузка модели Whisper"""
-        model_size = self.config.get('whisper_model', 'base')
+        """Загрузка локальной модели Whisper"""
+        # Опциональный параметр, по умолчанию CPU
         device = self.config.get('whisper_device', 'cpu')
         compute_type = "int8" if device == "cpu" else "float16"
         
-        print(f"Загрузка модели Whisper ({model_size})...")
-        print(f"Устройство: {device}, тип вычислений: {compute_type}")
-        print("При первом запуске модель будет скачана автоматически...")
+        # Локальный путь к модели обязателен
+        whisper_model_path = self.config.get('whisper_model_path')
+        if not whisper_model_path:
+            raise ValueError(
+                "Для Whisper необходимо указать локальный путь к модели!\n"
+                "Добавьте в config.json параметр:\n"
+                '  "whisper_model_path": "models/faster-whisper-base"\n\n'
+                "Скачайте модель используя: python download_whisper_model.py"
+            )
         
-        model = WhisperModel(model_size, device=device, compute_type=compute_type)
-        print("Модель Whisper успешно загружена!")
-        return model
+        # Автоматическое определение размера модели из пути (для информационных целей)
+        detected_size = self.extract_whisper_model_size(whisper_model_path)
+        model_size = self.config.get('whisper_model') or detected_size or 'unknown'
+        
+        if detected_size and not self.config.get('whisper_model'):
+            print(f"Автоматически определен размер модели: {detected_size}")
+        
+        # Проверка существования локальной модели
+        model_path = Path(whisper_model_path)
+        if not model_path.exists():
+            raise FileNotFoundError(
+                f"Локальная модель Whisper не найдена по пути: {model_path}\n\n"
+                f"Скачайте модель в папку models/ используя:\n"
+                f"  python download_whisper_model.py\n\n"
+                f"Затем укажите путь в config.json:\n"
+                f'  "whisper_model_path": "models/faster-whisper-base"'
+            )
+        
+        # Проверка наличия ключевых файлов модели
+        required_files = ['model.bin', 'config.json']
+        missing_files = [f for f in required_files if not (model_path / f).exists()]
+        if missing_files:
+            raise FileNotFoundError(
+                f"В локальной модели Whisper отсутствуют файлы: {', '.join(missing_files)}\n"
+                f"Путь: {model_path}\n\n"
+                f"Перезагрузите модель используя:\n"
+                f"  python download_whisper_model.py"
+            )
+        
+        # Преобразуем в абсолютный путь для надежности
+        model_source = str(model_path.absolute())
+        print(f"Загрузка локальной модели Whisper из: {model_source}")
+        if model_size != 'unknown':
+            print(f"Размер модели: {model_size}")
+        print(f"Устройство: {device}, тип вычислений: {compute_type}")
+        
+        try:
+            model = WhisperModel(model_source, device=device, compute_type=compute_type)
+            print("✓ Модель Whisper успешно загружена!")
+            return model
+        except Exception as e:
+            error_msg = str(e)
+            print("\n" + "!"*60)
+            print("⚠️  ОШИБКА ЗАГРУЗКИ МОДЕЛИ")
+            print("!"*60)
+            print(f"Не удалось загрузить локальную модель Whisper: {error_msg}")
+            print("\nВозможные решения:")
+            print("1. Проверьте правильность пути к модели в config.json")
+            print("2. Убедитесь, что модель полностью загружена:")
+            print("   python download_whisper_model.py")
+            print("3. Проверьте, что все файлы модели присутствуют в папке")
+            print("4. Попробуйте использовать Vosk вместо Whisper")
+            print("!"*60 + "\n")
+            raise
     
     def extract_language_from_model_path(self):
         """
@@ -361,8 +441,12 @@ class AudioTranscriber:
         try:
             # Для Vosk нужна конвертация в WAV, для Whisper - нет
             if self.engine == 'vosk':
+                # Создание директории для временных файлов
+                temp_dir = Path(self.config.get('temp_dir', '.data/temp'))
+                temp_dir.mkdir(parents=True, exist_ok=True)
+                
                 # Путь к временному WAV файлу
-                temp_wav = Path(self.config['output_dir']) / f"temp_{input_path.stem}.wav"
+                temp_wav = temp_dir / f"temp_{input_path.stem}.wav"
                 
                 # Конвертация в WAV
                 print(f"Конвертация {input_path.suffix} -> WAV...")
@@ -418,6 +502,12 @@ class AudioTranscriber:
         for ext in self.config['supported_formats']:
             audio_files.extend(list(input_dir.glob(f"*{ext}")))
             audio_files.extend(list(input_dir.glob(f"*{ext.upper()}")))
+        
+        # Убираем дубликаты (на Windows файловая система регистронезависима)
+        audio_files = list(set(audio_files))
+        
+        # Сортируем файлы по имени для предсказуемого порядка обработки
+        audio_files = sorted(audio_files, key=lambda x: x.name.lower())
         
         if not audio_files:
             print(f"\nВ директории {input_dir} не найдено аудиофайлов")

@@ -6,7 +6,7 @@
 
 - ✅ **Два движка распознавания:** Vosk (быстрый) и Whisper (точный)
 - ✅ **Переключение через конфигурацию** - сравните качество обоих движков
-- ✅ Поддержка множества аудиоформатов (WAV, MP3, OGG, FLAC, M4A, WMA, AAC)
+- ✅ Поддержка множества аудиоформатов (WAV, MP3, OGG, FLAC, M4A, WMA, AAC, WebM)
 - ✅ Автоматическая конвертация в нужный формат (для Vosk) или прямая обработка (для Whisper)
 - ✅ Пакетная обработка файлов из директории
 - ✅ Сохранение результатов в формате Markdown
@@ -68,6 +68,12 @@ pip install -r requirements.txt
 Это установит:
 - `vosk` - библиотека для распознавания речи (движок Vosk)
 - `faster-whisper` - библиотека для распознавания речи (движок Whisper)
+
+**⚠️ Внимание для Python 3.13+:**
+Если вы используете Python 3.13 или новее, установка `faster-whisper` может требовать Rust. В этом случае рекомендуется:
+1. Установить Rust (https://rustup.rs/) и затем установить `faster-whisper`
+2. Или использовать Python 3.11-3.12 для лучшей совместимости
+3. Или использовать Vosk вместо Whisper
 
 ### 3. Установка ffmpeg (только для Vosk)
 
@@ -136,8 +142,9 @@ models/
   "input_dir": ".data/input",
   "output_dir": ".data/output",
   "processed_dir": ".data/processed",
+  "temp_dir": ".data/temp",
   "sample_rate": 16000,
-  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac"]
+  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac", ".webm"]
 }
 ```
 
@@ -151,8 +158,9 @@ models/
   "input_dir": ".data/input",
   "output_dir": ".data/output",
   "processed_dir": ".data/processed",
+  "temp_dir": ".data/temp",
   "sample_rate": 16000,
-  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac"]
+  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac", ".webm"]
 }
 ```
 
@@ -175,7 +183,7 @@ models/
   "output_dir": ".data/output",
   "processed_dir": ".data/processed",
   "sample_rate": 16000,
-  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac"]
+  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac", ".webm"]
 }
 ```
 
@@ -184,6 +192,7 @@ models/
 - `input_dir` - директория с входными аудиофайлами
 - `output_dir` - директория для сохранения результатов транскрипции
 - `processed_dir` - директория для обработанных аудиофайлов
+- `temp_dir` - директория для временных файлов (WAV конвертации, автоматически удаляются)
 - `sample_rate` - частота дискретизации (16000 Hz)
 - `supported_formats` - список поддерживаемых форматов
 
@@ -193,7 +202,7 @@ models/
 
 **Параметры для Whisper:**
 - `whisper_model` - размер модели: `tiny`, `base`, `small`, `medium`, `large`
-- `whisper_device` - устройство: `cpu` или `cuda` (для GPU)
+- `whisper_device` - **[опционально]** устройство: `cpu` (по умолчанию) или `cuda` (для GPU)
 - `language` - **[опционально]** Whisper определяет язык автоматически
 
 ## Сравнение движков
@@ -342,7 +351,9 @@ speech-recognition/
 │   │   └── .gitkeep
 │   ├── output/         # Результаты транскрибации в Markdown
 │   │   └── .gitkeep
-│   └── processed/      # Обработанные аудиофайлы (автоматически перемещаются сюда)
+│   ├── processed/      # Обработанные аудиофайлы (автоматически перемещаются сюда)
+│   │   └── .gitkeep
+│   └── temp/           # Временные файлы (WAV конвертации, автоматически удаляются)
 │       └── .gitkeep
 ├── models/             # Модели Vosk
 │   └── .gitkeep
