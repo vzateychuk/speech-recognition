@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Программа для транскрибации аудиофайлов с использованием библиотеки Vosk
+Программа для транскрибации аудиофайлов с использованием Vosk или Whisper
 """
 
 import os
@@ -12,7 +12,20 @@ import shutil
 import subprocess
 from pathlib import Path
 from datetime import datetime
-from vosk import Model, KaldiRecognizer
+
+# Импорты для Vosk
+try:
+    from vosk import Model, KaldiRecognizer
+    VOSK_AVAILABLE = True
+except ImportError:
+    VOSK_AVAILABLE = False
+
+# Импорты для Whisper
+try:
+    from faster_whisper import WhisperModel
+    WHISPER_AVAILABLE = True
+except ImportError:
+    WHISPER_AVAILABLE = False
 
 
 class AudioTranscriber:
@@ -21,8 +34,23 @@ class AudioTranscriber:
     def __init__(self, config_path="config.json"):
         """Инициализация транскрибера с конфигурацией"""
         self.config = self.load_config(config_path)
+        self.engine = self.config.get('engine', 'vosk').lower()
+        
+        # Проверка доступности выбранного движка
+        if self.engine == 'vosk' and not VOSK_AVAILABLE:
+            raise ImportError("Vosk не установлен. Выполните: pip install vosk")
+        if self.engine == 'whisper' and not WHISPER_AVAILABLE:
+            raise ImportError("Whisper не установлен. Выполните: pip install faster-whisper")
+        
+        if self.engine not in ['vosk', 'whisper']:
+            raise ValueError(f"Неподдерживаемый движок: {self.engine}. Используйте 'vosk' или 'whisper'")
+        
+        print(f"Используется движок: {self.engine.upper()}")
+        
         self.model = self.load_model()
-        self.validate_language_config()
+        
+        if self.engine == 'vosk':
+            self.validate_language_config()
         
     def load_config(self, config_path):
         """Загрузка конфигурационного файла"""
@@ -33,31 +61,62 @@ class AudioTranscriber:
             return json.load(f)
     
     def load_model(self):
+        """Загрузка модели в зависимости от выбранного движка"""
+        if self.engine == 'vosk':
+            return self.load_vosk_model()
+        elif self.engine == 'whisper':
+            return self.load_whisper_model()
+    
+    def load_vosk_model(self):
         """Загрузка модели Vosk"""
-        model_path = self.config['model_path']
+        model_path = self.config.get('vosk_model_path') or self.config.get('model_path')
+        
+        if not model_path:
+            raise ValueError("Не указан путь к модели Vosk (vosk_model_path)")
         
         if not os.path.exists(model_path):
             raise FileNotFoundError(
-                f"Модель не найдена по пути: {model_path}\n"
+                f"Модель Vosk не найдена по пути: {model_path}\n"
                 f"Скачайте модель с https://alphacephei.com/vosk/models\n"
                 f"Для русского языка рекомендуется: vosk-model-small-ru-0.22 или vosk-model-ru-0.42"
             )
         
-        print(f"Загрузка модели из {model_path}...")
+        print(f"Загрузка модели Vosk из {model_path}...")
         model = Model(model_path)
-        print("Модель успешно загружена!")
+        print("Модель Vosk успешно загружена!")
+        return model
+    
+    def load_whisper_model(self):
+        """Загрузка модели Whisper"""
+        model_size = self.config.get('whisper_model', 'base')
+        device = self.config.get('whisper_device', 'cpu')
+        compute_type = "int8" if device == "cpu" else "float16"
+        
+        print(f"Загрузка модели Whisper ({model_size})...")
+        print(f"Устройство: {device}, тип вычислений: {compute_type}")
+        print("При первом запуске модель будет скачана автоматически...")
+        
+        model = WhisperModel(model_size, device=device, compute_type=compute_type)
+        print("Модель Whisper успешно загружена!")
         return model
     
     def extract_language_from_model_path(self):
         """
-        Извлечение кода языка из названия модели.
+        Извлечение кода языка из названия модели Vosk.
+        Для Whisper язык не требуется (определяется автоматически).
         Примеры:
         - vosk-model-small-ru-0.22 -> ru
         - vosk-model-ru-0.42 -> ru
         - vosk-model-en-us-0.22 -> en-us
         - vosk-model-small-en-us-0.22 -> en-us
         """
-        model_path = self.config['model_path']
+        if self.engine != 'vosk':
+            return None
+            
+        model_path = self.config.get('vosk_model_path') or self.config.get('model_path')
+        if not model_path:
+            return None
+            
         model_name = Path(model_path).name
         
         # Паттерны для различных форматов названий моделей
@@ -177,8 +236,15 @@ class AudioTranscriber:
             print("!"*60 + "\n")
             return False
     
-    def transcribe_audio(self, wav_file):
-        """Транскрибация аудиофайла"""
+    def transcribe_audio(self, audio_file):
+        """Транскрибация аудиофайла (выбирает метод в зависимости от движка)"""
+        if self.engine == 'vosk':
+            return self.transcribe_audio_vosk(audio_file)
+        elif self.engine == 'whisper':
+            return self.transcribe_audio_whisper(audio_file)
+    
+    def transcribe_audio_vosk(self, wav_file):
+        """Транскрибация аудиофайла с помощью Vosk"""
         wf = wave.open(wav_file, "rb")
         
         # Проверка формата
@@ -222,6 +288,41 @@ class AudioTranscriber:
         
         return results
     
+    def transcribe_audio_whisper(self, audio_file):
+        """Транскрибация аудиофайла с помощью Whisper"""
+        print("Транскрибация аудио с помощью Whisper...")
+        
+        # Определяем язык (можно указать вручную или оставить None для автоопределения)
+        language = self.config.get('language', None)
+        if language:
+            language = language.split('-')[0]  # en-us -> en
+        
+        # Транскрибация
+        segments, info = self.model.transcribe(
+            audio_file,
+            language=language,
+            beam_size=5,
+            word_timestamps=False  # Отключаем временные метки для простоты
+        )
+        
+        # Whisper возвращает обнаруженный язык
+        detected_lang = info.language
+        if not self.config.get('language'):
+            self.config['language'] = detected_lang
+        
+        print(f"Обнаружен язык: {detected_lang} (вероятность: {info.language_probability:.2f})")
+        
+        # Собираем текст из сегментов
+        results = []
+        full_text = ""
+        for segment in segments:
+            full_text += segment.text + " "
+        
+        # Форматируем результат в формат, совместимый с Vosk
+        results.append({'text': full_text.strip()})
+        
+        return results
+    
     def format_results_to_markdown(self, results, original_filename):
         """Форматирование результатов в Markdown"""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -229,7 +330,8 @@ class AudioTranscriber:
         markdown = f"# Транскрипция аудиофайла\n\n"
         markdown += f"**Исходный файл:** {original_filename}\n\n"
         markdown += f"**Дата обработки:** {timestamp}\n\n"
-        markdown += f"**Язык:** {self.config['language']}\n\n"
+        markdown += f"**Движок распознавания:** {self.engine.upper()}\n\n"
+        markdown += f"**Язык:** {self.config.get('language', 'неизвестно')}\n\n"
         markdown += f"---\n\n"
         markdown += f"## Текст транскрипции\n\n"
         
@@ -254,18 +356,26 @@ class AudioTranscriber:
             print(f"Пропуск файла {input_path.name}: неподдерживаемый формат")
             return False
         
-        # Путь к временному WAV файлу
-        temp_wav = Path(self.config['output_dir']) / f"temp_{input_path.stem}.wav"
+        temp_wav = None  # Инициализация для finally блока
         
         try:
-            # Конвертация в WAV
-            print(f"Конвертация {input_path.suffix} -> WAV...")
-            if not self.convert_to_wav(str(input_path), str(temp_wav)):
-                print(f"Ошибка конвертации файла {input_path.name}")
-                return False
-            
-            # Транскрибация
-            results = self.transcribe_audio(str(temp_wav))
+            # Для Vosk нужна конвертация в WAV, для Whisper - нет
+            if self.engine == 'vosk':
+                # Путь к временному WAV файлу
+                temp_wav = Path(self.config['output_dir']) / f"temp_{input_path.stem}.wav"
+                
+                # Конвертация в WAV
+                print(f"Конвертация {input_path.suffix} -> WAV...")
+                if not self.convert_to_wav(str(input_path), str(temp_wav)):
+                    print(f"Ошибка конвертации файла {input_path.name}")
+                    return False
+                
+                # Транскрибация
+                results = self.transcribe_audio(str(temp_wav))
+            else:
+                # Whisper работает напрямую с любыми форматами
+                temp_wav = None
+                results = self.transcribe_audio(str(input_path))
             
             # Форматирование и сохранение результата
             markdown = self.format_results_to_markdown(results, input_path.name)
@@ -291,8 +401,8 @@ class AudioTranscriber:
             return False
         
         finally:
-            # Удаление временного файла
-            if temp_wav.exists():
+            # Удаление временного файла (только для Vosk)
+            if self.engine == 'vosk' and temp_wav and temp_wav.exists():
                 temp_wav.unlink()
     
     def process_directory(self):
