@@ -1,0 +1,850 @@
+{
+  "version": "1.3",
+  "description": "Словарь замен некорректно распознанных технических терминов для транскрипции встреч OCRV-205 по конструктору",
+  "contexts": {
+    "constructor_project": {
+      "name": "OCRV-205 - Конструктор XML",
+      "description": "Технические термины для встреч по конструктору конфигурационных файлов",
+      "whisper_prompt": "Техническая встреча OCRV-205. Конструктор XML конфигураций ЕКАСУД. Термины: Tomcat, constructor, component, generator, CMP, datagrid, toolbar, column, custom, config, action, double click, scope, widget, controller, webclient, NullPointer, XML, loader, properties, initializer, resolver, lookup, breakpoint, parent, child, item, render, execute, apply, package, card, tab, repository, print form, directory structure, document export, restart tomcat, alias, mapping, versioning, content, job, migration, transfer, access rights, folder, directory, signature, electronic signature, table component, search, scheduled task, cron, debug, bundle, settings, dev stand, content server, version, preview, monitoring, logs, identifier, external identifier",
+      "vosk_hotwords": [
+        "Tomcat",
+        "constructor", 
+        "component",
+        "generator",
+        "CMP",
+        "datagrid",
+        "toolbar",
+        "column",
+        "custom",
+        "config",
+        "action",
+        "scope",
+        "widget",
+        "controller",
+        "webclient",
+        "XML",
+        "loader",
+        "properties",
+        "initializer",
+        "resolver",
+        "lookup",
+        "breakpoint",
+        "apply",
+        "package",
+        "card",
+        "tab",
+        "repository",
+        "print form",
+        "directory structure",
+        "document export",
+        "restart tomcat",
+        "alias",
+        "mapping",
+        "versioning",
+        "content",
+        "job",
+        "migration",
+        "transfer",
+        "access rights",
+        "folder",
+        "directory",
+        "signature",
+        "electronic signature",
+        "table component",
+        "search",
+        "scheduled task",
+        "cron",
+        "debug",
+        "bundle",
+        "settings",
+        "dev stand",
+        "content server",
+        "version",
+        "preview",
+        "monitoring",
+        "logs",
+        "identifier",
+        "external identifier"
+      ],
+      "replacements": [
+        {
+          "wrong": "томкат",
+          "correct": "Tomcat",
+          "patterns": ["томкат", "томкэт", "Томкат", "Томкэт", "тамкату"],
+          "priority": 1,
+          "comment": "Apache Tomcat - сервер приложений"
+        },
+        {
+          "wrong": "датогрид",
+          "correct": "datagrid",
+          "patterns": ["датогрид", "датагрид", "Датогрид", "Датагрид", "дата грид", "дабул грит", "дата грит"],
+          "priority": 1,
+          "comment": "Компонент таблицы данных"
+        },
+        {
+          "wrong": "тубар",
+          "correct": "toolbar",
+          "patterns": ["тубар", "Тубар", "тубары", "Тубары"],
+          "priority": 1,
+          "comment": "Панель инструментов"
+        },
+        {
+          "wrong": "дабоклик",
+          "correct": "double click",
+          "patterns": ["дабоклик", "дабулклик", "дабулплипекшен", "да был клик", "был клик", "былк", "дабулпликом", "даболклипекшен", "даболклип"],
+          "priority": 1,
+          "comment": "Двойной клик мыши"
+        },
+        {
+          "wrong": "костом",
+          "correct": "custom",
+          "patterns": ["костом[а-я]*", "Костом[а-я]*", "кастом[а-я]*"],
+          "priority": 1,
+          "comment": "Пользовательский, кастомный"
+        },
+        {
+          "wrong": "конфиг",
+          "correct": "config",
+          "patterns": ["конфиг[а-я]*", "Конфиг[а-я]*", "конфидии", "конфикс", "конфике"],
+          "priority": 1,
+          "comment": "Конфигурация"
+        },
+        {
+          "wrong": "компонент",
+          "correct": "component",
+          "patterns": ["компонент[а-я]*", "Компонент[а-я]*", "компанент[а-я]*"],
+          "priority": 2,
+          "comment": "Компонент системы"
+        },
+        {
+          "wrong": "генератор",
+          "correct": "generator",
+          "patterns": ["генератор[а-я]*", "Генератор[а-я]*"],
+          "priority": 2,
+          "comment": "Генератор кода/конфигураций"
+        },
+        {
+          "wrong": "колом",
+          "correct": "column",
+          "patterns": ["колом[а-я]*", "Колом[а-я]*", "колонк[а-я]*", "линк-колом", "линкколом"],
+          "priority": 1,
+          "comment": "Столбец таблицы"
+        },
+        {
+          "wrong": "экшен",
+          "correct": "action",
+          "patterns": ["экшен[а-я]*", "Экшен[а-я]*", "экшум", "лентэкшем", "линкэкшем", "линтекшен", "линкакшем"],
+          "priority": 1,
+          "comment": "Действие, событие"
+        },
+        {
+          "wrong": "скоп",
+          "correct": "scope",
+          "patterns": ["скоп[а-я]*", "Скоп[а-я]*", "скупом"],
+          "priority": 1,
+          "comment": "Область видимости"
+        },
+        {
+          "wrong": "контроллер",
+          "correct": "controller",
+          "patterns": ["контроллер[а-я]*", "Контроллер[а-я]*"],
+          "priority": 2,
+          "comment": "Контроллер MVC"
+        },
+        {
+          "wrong": "виджет",
+          "correct": "widget",
+          "patterns": ["виджет[а-я]*", "виджэт[а-я]*", "Виджет[а-я]*", "Виджэт[а-я]*"],
+          "priority": 2,
+          "comment": "Виджет UI"
+        },
+        {
+          "wrong": "конструктор",
+          "correct": "constructor",
+          "patterns": ["конструктор[а-я]*", "конструтор[а-я]*", "Конструктор[а-я]*", "Конструтор[а-я]*"],
+          "priority": 2,
+          "comment": "Конструктор компонентов"
+        },
+        {
+          "wrong": "ксум",
+          "correct": "XML",
+          "patterns": ["ксум[а-я]*", "Ксум[а-я]*", "ксенальку", "экселку"],
+          "priority": 1,
+          "comment": "XML формат файлов"
+        },
+        {
+          "wrong": "лейбл",
+          "correct": "label",
+          "patterns": ["лейбл[а-я]*", "Лейбл[а-я]*"],
+          "priority": 2,
+          "comment": "Метка, ярлык"
+        },
+        {
+          "wrong": "веплиент",
+          "correct": "webclient",
+          "patterns": ["веплиент[а-я]*", "Веплиент[а-я]*"],
+          "priority": 1,
+          "comment": "Веб-клиент приложения"
+        },
+        {
+          "wrong": "липонтер",
+          "correct": "NullPointer",
+          "patterns": ["липонтер[а-я]*", "Липонтер[а-я]*"],
+          "priority": 1,
+          "comment": "NullPointerException"
+        },
+        {
+          "wrong": "кзукиут",
+          "correct": "execute",
+          "patterns": ["кзукиут[а-я]*", "Кзукиут[а-я]*"],
+          "priority": 1,
+          "comment": "Выполнение, исполнение"
+        },
+        {
+          "wrong": "линк",
+          "correct": "link",
+          "patterns": ["линк[а-я]*", "Линк[а-я]*"],
+          "priority": 2,
+          "comment": "Ссылка"
+        },
+        {
+          "wrong": "франеи",
+          "correct": "class name",
+          "patterns": ["франеи", "Франеи"],
+          "priority": 2,
+          "comment": "Имя класса"
+        },
+        {
+          "wrong": "шалайзер",
+          "correct": "initializer",
+          "patterns": ["шалайзер[а-я]*", "Шалайзер[а-я]*", "нишалазер[а-я]*", "шоолайзер[а-я]*", "ничоолайзер[а-я]*"],
+          "priority": 1,
+          "comment": "Инициализатор компонента"
+        },
+        {
+          "wrong": "симпигенератор",
+          "correct": "CMP generator",
+          "patterns": ["симпигенератор[а-я]*", "Симпигенератор[а-я]*", "цмп генератор[а-я]*", "с[её]мпи генератор[а-я]*"],
+          "priority": 1,
+          "comment": "CMP Generator - генератор компонентов конструктора"
+        },
+        {
+          "wrong": "лодер",
+          "correct": "loader",
+          "patterns": ["лодер[а-я]*", "Лодер[а-я]*", "лодырь", "проппер тиц лодер", "пропортислод[а-я]*"],
+          "priority": 1,
+          "comment": "Загрузчик (например: PropertiesLoader)"
+        },
+        {
+          "wrong": "айтом",
+          "correct": "item",
+          "patterns": ["айтом[а-я]*", "Айтом[а-я]*", "айтамс", "айтемс"],
+          "priority": 1,
+          "comment": "Элемент списка, пункт"
+        },
+        {
+          "wrong": "челдом",
+          "correct": "child",
+          "patterns": ["челдом[а-я]*", "Челдом[а-я]*"],
+          "priority": 1,
+          "comment": "Дочерний элемент (например: addChild)"
+        },
+        {
+          "wrong": "одичник",
+          "correct": "ID",
+          "patterns": ["одичник[а-я]*", "Одичник[а-я]*", "одешник[а-я]*", "айдишник[а-я]*", "иди[её]шник[а-я]*"],
+          "priority": 1,
+          "comment": "Идентификатор (r_object_id)"
+        },
+        {
+          "wrong": "парант",
+          "correct": "parent",
+          "patterns": ["парант[а-я]*", "Парант[а-я]*", "парентов[а-я]*"],
+          "priority": 1,
+          "comment": "Родительский элемент (parent config, parent component)"
+        },
+        {
+          "wrong": "рендер",
+          "correct": "render",
+          "patterns": ["рендер[а-я]*", "Рендер[а-я]*"],
+          "priority": 1,
+          "comment": "Отрисовка, рендеринг"
+        },
+        {
+          "wrong": "резолвер",
+          "correct": "resolver",
+          "patterns": ["резолвер[а-я]*", "Резолвер[а-я]*", "резолюв[а-я]*"],
+          "priority": 1,
+          "comment": "Resolver - преобразователь контекста"
+        },
+        {
+          "wrong": "лукап",
+          "correct": "lookup",
+          "patterns": ["лукап[а-я]*", "Лукап[а-я]*"],
+          "priority": 1,
+          "comment": "Поиск компонента (component lookup)"
+        },
+        {
+          "wrong": "брейкоин",
+          "correct": "breakpoint",
+          "patterns": ["брейкоин[а-я]*", "Брейкоин[а-я]*", "брекпоинт[а-я]*"],
+          "priority": 1,
+          "comment": "Точка останова в отладчике"
+        },
+        {
+          "wrong": "проппер тиц",
+          "correct": "properties",
+          "patterns": ["проппер тиц[а-я]*", "Проппер тиц[а-я]*", "пропорте[а-я]*", "пропортис[а-я]*"],
+          "priority": 1,
+          "comment": "Properties файлы конфигурации"
+        },
+        {
+          "wrong": "пропратишь",
+          "correct": "properties",
+          "patterns": ["пропратишь", "Пропратишь", "проопротис", "пропротес"],
+          "priority": 1,
+          "comment": "Properties - вариант неправильного распознавания"
+        },
+        {
+          "wrong": "каталина",
+          "correct": "Catalina",
+          "patterns": ["каталина", "Каталина", "като", "ката"],
+          "priority": 1,
+          "comment": "Catalina - компонент Tomcat (catalina.bat)"
+        },
+        {
+          "wrong": "наследование",
+          "correct": "inheritance",
+          "patterns": [],
+          "priority": 3,
+          "comment": "Наследование - корректное русское слово, не заменять"
+        },
+        {
+          "wrong": "сталбец",
+          "correct": "столбец",
+          "patterns": ["сталбец[а-я]*"],
+          "priority": 2,
+          "comment": "Столбец таблицы - опечатка в распознавании"
+        },
+        {
+          "wrong": "стручке",
+          "correct": "строчке",
+          "patterns": ["стручк[еи]", "строчк[еи]"],
+          "priority": 2,
+          "comment": "Строчка кода"
+        },
+        {
+          "wrong": "тутип",
+          "correct": "tooltip",
+          "patterns": ["тутип", "Тутип"],
+          "priority": 1,
+          "comment": "Всплывающая подсказка вкладки (tooltip)"
+        },
+        {
+          "wrong": "сплывающая подсказка",
+          "correct": "tooltip",
+          "patterns": [
+            "сплывающ[аи][е]? подсказк[аи]?",
+            "сплоящ[ие] подсказк[аи]?"
+          ],
+          "priority": 1,
+          "comment": "Неверно распознанное словосочетание для tooltip"
+        },
+        {
+          "wrong": "ССА-тутип",
+          "correct": "ssa_tooltip",
+          "patterns": ["ССА[- ]тутип", "SSA[- ]тутип"],
+          "priority": 1,
+          "comment": "Атрибут tooltip в Constructor (ssa_tooltip)"
+        },
+        {
+          "wrong": "ксмельки",
+          "correct": "CSTM XML",
+          "patterns": ["ксмельк[аи]", "ксмель"],
+          "priority": 2,
+          "comment": "CSTM XML-конфиги конструктора"
+        },
+        {
+          "wrong": "ремолдир",
+          "correct": "remoteConfigDir",
+          "patterns": ["ремолд[иы]р", "RemoldDear", "ремолдира"],
+          "priority": 1,
+          "comment": "Параметр web.xml для подключения remoteConfig"
+        },
+        {
+          "wrong": "вебек смель",
+          "correct": "web.xml",
+          "patterns": ["вебек ?смель", "вебексмель", "вебэксмель"],
+          "priority": 1,
+          "comment": "Конфигурационный файл web.xml"
+        },
+        {
+          "wrong": "симпалтайд форм генератор",
+          "correct": "SimpleTypeFormGenerator",
+          "patterns": [
+            "симпалтай[дт] форм[- ]?generator",
+            "симп[ао]л[- ]?тайп[- ]?форм[- ]?генератор"
+          ],
+          "priority": 1,
+          "comment": "Генератор форм SimpleTypeFormGenerator"
+        },
+        {
+          "wrong": "документ тайп форм генератор",
+          "correct": "DocumentTypeFormGenerator",
+          "patterns": [
+            "документ[- ]?тайп[- ]?форм[- ]?generator",
+            "document type form generator"
+          ],
+          "priority": 1,
+          "comment": "Генератор форм DocumentTypeFormGenerator"
+        },
+        {
+          "wrong": "применить",
+          "correct": "apply",
+          "patterns": ["применить", "Применить", "применять", "Применять", "применя[её]т", "применя[её]м"],
+          "priority": 2,
+          "comment": "Применить изменения, применить пакет (apply package)"
+        },
+        {
+          "wrong": "пакет",
+          "correct": "package",
+          "patterns": ["пакет[а-я]*", "Пакет[а-я]*"],
+          "priority": 2,
+          "comment": "Пакет конфигураций Constructor (package)"
+        },
+        {
+          "wrong": "картточка",
+          "correct": "card",
+          "patterns": ["картточк[аи]", "Картточк[аи]", "карточк[аи]", "Карточк[аи]"],
+          "priority": 2,
+          "comment": "Карточка в Constructor (card)"
+        },
+        {
+          "wrong": "закладка",
+          "correct": "tab",
+          "patterns": ["закладк[аи]", "Закладк[аи]", "вкладк[аи]", "Вкладк[аи]"],
+          "priority": 2,
+          "comment": "Вкладка/закладка в интерфейсе (tab)"
+        },
+        {
+          "wrong": "хранидеще",
+          "correct": "repository",
+          "patterns": ["хранидещ[еа]", "Хранидещ[еа]", "репозитори[йи]", "Репозитори[йи]"],
+          "priority": 1,
+          "comment": "Хранилище документов (repository)"
+        },
+        {
+          "wrong": "печатная форум",
+          "correct": "print form",
+          "patterns": ["печатная форум[а-я]*", "Печатная форум[а-я]*", "печатная форм[а-я]*", "Печатная форм[а-я]*"],
+          "priority": 1,
+          "comment": "Печатная форма документа (print form)"
+        },
+        {
+          "wrong": "структуры каталогов",
+          "correct": "directory structure",
+          "patterns": ["структуры каталогов", "Структуры каталогов", "структура каталогов", "Структура каталогов"],
+          "priority": 2,
+          "comment": "Структура каталогов (directory structure)"
+        },
+        {
+          "wrong": "экспорт до кисос",
+          "correct": "document export",
+          "patterns": ["экспорт до кисос", "экспорт документов", "Экспорт документов", "экспорт документ[а-я]*"],
+          "priority": 1,
+          "comment": "Экспорт документов (document export)"
+        },
+        {
+          "wrong": "перезагрузить тамкат",
+          "correct": "restart tomcat",
+          "patterns": ["перезагрузить тамкат", "Перезагрузить тамкат", "перезагрузить томкат", "Перезагрузить томкат"],
+          "priority": 1,
+          "comment": "Перезагрузить Tomcat (restart tomcat)"
+        },
+        {
+          "wrong": "алиас",
+          "correct": "alias",
+          "patterns": ["алиас[а-я]*", "Алиас[а-я]*", "алиасы", "Алиасы"],
+          "priority": 1,
+          "comment": "Псевдоним класса (alias)"
+        },
+        {
+          "wrong": "мапинг",
+          "correct": "mapping",
+          "patterns": ["мапинг[а-я]*", "Мапинг[а-я]*", "мапинги", "Мапинги"],
+          "priority": 1,
+          "comment": "Сопоставление атрибутов (mapping)"
+        },
+        {
+          "wrong": "версионирование",
+          "correct": "versioning",
+          "patterns": ["версионирова[а-я]*", "Версионирова[а-я]*", "версионирова[а-я]*"],
+          "priority": 1,
+          "comment": "Версионирование документов (versioning)"
+        },
+        {
+          "wrong": "контент",
+          "correct": "content",
+          "patterns": ["контент[а-я]*", "Контент[а-я]*"],
+          "priority": 1,
+          "comment": "Контент документа (content)"
+        },
+        {
+          "wrong": "джаба",
+          "correct": "job",
+          "patterns": ["джаб[а-я]*", "Джаб[а-я]*", "джаба", "Джаба"],
+          "priority": 1,
+          "comment": "Задача по расписанию (job)"
+        },
+        {
+          "wrong": "миграция",
+          "correct": "migration",
+          "patterns": ["миграц[ияи][а-я]*", "Миграц[ияи][а-я]*"],
+          "priority": 1,
+          "comment": "Миграция данных (migration)"
+        },
+        {
+          "wrong": "перенос",
+          "correct": "transfer",
+          "patterns": ["перенос[а-я]*", "Перенос[а-я]*"],
+          "priority": 2,
+          "comment": "Перенос документов между хранилищами (transfer)"
+        },
+        {
+          "wrong": "права доступа",
+          "correct": "access rights",
+          "patterns": ["права доступа", "Права доступа"],
+          "priority": 1,
+          "comment": "Права доступа к документам (access rights)"
+        },
+        {
+          "wrong": "папка",
+          "correct": "folder",
+          "patterns": ["папк[аи]", "Папк[аи]"],
+          "priority": 2,
+          "comment": "Папка в хранилище (folder)"
+        },
+        {
+          "wrong": "каталог",
+          "correct": "directory",
+          "patterns": ["каталог[а-я]*", "Каталог[а-я]*"],
+          "priority": 2,
+          "comment": "Каталог документов (directory)"
+        },
+        {
+          "wrong": "подпись",
+          "correct": "signature",
+          "patterns": ["подпис[ьи][а-я]*", "Подпис[ьи][а-я]*"],
+          "priority": 1,
+          "comment": "Электронная подпись (signature)"
+        },
+        {
+          "wrong": "электронная подпись",
+          "correct": "electronic signature",
+          "patterns": ["электронная подпис[ьи]", "Электронная подпис[ьи]", "ЭП"],
+          "priority": 1,
+          "comment": "Электронная подпись (electronic signature)"
+        },
+        {
+          "wrong": "табличный компонент",
+          "correct": "table component",
+          "patterns": ["табличный компонент", "Табличный компонент"],
+          "priority": 2,
+          "comment": "Табличный компонент (table component)"
+        },
+        {
+          "wrong": "поиск",
+          "correct": "search",
+          "patterns": ["поиск[а-я]*", "Поиск[а-я]*"],
+          "priority": 2,
+          "comment": "Поиск документов (search)"
+        },
+        {
+          "wrong": "задача по расписанию",
+          "correct": "scheduled task",
+          "patterns": ["задача по расписанию", "Задача по расписанию"],
+          "priority": 1,
+          "comment": "Задача по расписанию (scheduled task)"
+        },
+        {
+          "wrong": "крона",
+          "correct": "cron",
+          "patterns": ["крон[а-я]*", "Крон[а-я]*", "крона", "Крона"],
+          "priority": 1,
+          "comment": "Cron выражение для расписания (cron)"
+        },
+        {
+          "wrong": "дебаг",
+          "correct": "debug",
+          "patterns": ["дебаг[а-я]*", "Дебаг[а-я]*", "дебажить", "Дебажить"],
+          "priority": 1,
+          "comment": "Отладка (debug)"
+        },
+        {
+          "wrong": "бандл",
+          "correct": "bundle",
+          "patterns": ["бандл[а-я]*", "Бандл[а-я]*"],
+          "priority": 1,
+          "comment": "Бандл конфигураций (bundle)"
+        },
+        {
+          "wrong": "сеттинг",
+          "correct": "settings",
+          "patterns": ["сеттинг[а-я]*", "Сеттинг[а-я]*"],
+          "priority": 1,
+          "comment": "Настройки (settings)"
+        },
+        {
+          "wrong": "девстенд",
+          "correct": "dev stand",
+          "patterns": ["девстенд[а-я]*", "Девстенд[а-я]*", "дев стенд", "Дев стенд"],
+          "priority": 1,
+          "comment": "DEV стенд (dev stand)"
+        },
+        {
+          "wrong": "контент сервер",
+          "correct": "content server",
+          "patterns": ["контент сервер[а-я]*", "Контент сервер[а-я]*"],
+          "priority": 1,
+          "comment": "Content Server (content server)"
+        },
+        {
+          "wrong": "версия",
+          "correct": "version",
+          "patterns": ["верси[яи][а-я]*", "Верси[яи][а-я]*"],
+          "priority": 2,
+          "comment": "Версия документа (version)"
+        },
+        {
+          "wrong": "предпросмотр",
+          "correct": "preview",
+          "patterns": ["предпросмотр[а-я]*", "Предпросмотр[а-я]*"],
+          "priority": 1,
+          "comment": "Предпросмотр документа (preview)"
+        },
+        {
+          "wrong": "мониторинг",
+          "correct": "monitoring",
+          "patterns": ["мониторинг[а-я]*", "Мониторинг[а-я]*"],
+          "priority": 1,
+          "comment": "Мониторинг системы (monitoring)"
+        },
+        {
+          "wrong": "логи",
+          "correct": "logs",
+          "patterns": ["лог[а-я]*", "Лог[а-я]*"],
+          "priority": 2,
+          "comment": "Логи приложения (logs)"
+        },
+        {
+          "wrong": "идентификатор",
+          "correct": "identifier",
+          "patterns": ["идентификатор[а-я]*", "Идентификатор[а-я]*"],
+          "priority": 2,
+          "comment": "Идентификатор объекта (identifier)"
+        },
+        {
+          "wrong": "внешний идентификатор",
+          "correct": "external identifier",
+          "patterns": ["внешний идентификатор", "Внешний идентификатор"],
+          "priority": 1,
+          "comment": "Внешний идентификатор (external identifier)"
+        }
+      ]
+    },
+    "common_java_terms": {
+      "name": "Общие Java термины",
+      "description": "Распространенные Java и программные термины",
+      "whisper_prompt": "Java разработка. Термины: getter, setter, initializer, properties, instance, method, class, exception, interface",
+      "vosk_hotwords": [
+        "getter",
+        "setter",
+        "initializer",
+        "properties",
+        "instance",
+        "method",
+        "class"
+      ],
+      "replacements": [
+        {
+          "wrong": "геттер",
+          "correct": "getter",
+          "patterns": ["геттер[а-я]*", "Геттер[а-я]*", "гетер[а-я]*"],
+          "priority": 2,
+          "comment": "Метод-геттер"
+        },
+        {
+          "wrong": "сеттер",
+          "correct": "setter",
+          "patterns": ["сеттер[а-я]*", "Сеттер[а-я]*", "сетер[а-я]*"],
+          "priority": 2,
+          "comment": "Метод-сеттер"
+        },
+        {
+          "wrong": "косутеры",
+          "correct": "initializers",
+          "patterns": ["косутеры", "Косутеры"],
+          "priority": 1,
+          "comment": "Инициализаторы"
+        },
+        {
+          "wrong": "проперти",
+          "correct": "properties",
+          "patterns": ["проперти[а-я]*", "Проперти[а-я]*", "пропрати[а-я]*"],
+          "priority": 1,
+          "comment": "Свойства, настройки"
+        },
+        {
+          "wrong": "инстанс",
+          "correct": "instance",
+          "patterns": ["инстанс[а-я]*", "Инстанс[а-я]*", "инстанст[а-я]*"],
+          "priority": 2,
+          "comment": "Экземпляр класса"
+        },
+        {
+          "wrong": "метод",
+          "correct": "method",
+          "patterns": ["метод[а-я]*", "Метод[а-я]*"],
+          "priority": 3,
+          "comment": "Метод класса - низкий приоритет, часто корректно используется русское слово"
+        },
+        {
+          "wrong": "класс",
+          "correct": "class",
+          "patterns": [],
+          "priority": 3,
+          "comment": "Класс - низкий приоритет, часто корректно используется русское слово. Не используем автозамену."
+        },
+        {
+          "wrong": "сэкшен",
+          "correct": "exception",
+          "patterns": ["сэкшен[а-я]*", "Сэкшен[а-я]*", "ексепшен[а-я]*"],
+          "priority": 2,
+          "comment": "Исключение"
+        },
+        {
+          "wrong": "интерфейс",
+          "correct": "interface",
+          "patterns": [],
+          "priority": 3,
+          "comment": "Интерфейс - не используем автозамену, русское слово корректно"
+        }
+      ]
+    },
+    "project_specific": {
+      "name": "Специфичные термины проекта ЕКАСУД",
+      "description": "Термины специфичные для проекта ЕКАСУД и его компонентов",
+      "whisper_prompt": "Проект ЕКАСУД. Термины: ekasud, CacheReg, cache, scheduler, build, ant",
+      "vosk_hotwords": [
+        "ekasud",
+        "CacheReg",
+        "cache",
+        "scheduler"
+      ],
+      "replacements": [
+        {
+          "wrong": "косуд",
+          "correct": "ekasud",
+          "patterns": ["косуд", "экасуд", "Косуд", "Экасуд", "козу", "кошку"],
+          "priority": 1,
+          "comment": "Название проекта ЕКАСУД"
+        },
+        {
+          "wrong": "кашрек",
+          "correct": "CacheReg",
+          "patterns": ["кашрек", "кашрег", "Кашрек", "Кашрег"],
+          "priority": 1,
+          "comment": "CacheReg компонент"
+        },
+        {
+          "wrong": "кашелек",
+          "correct": "cache",
+          "patterns": ["кашелек", "Кашелек"],
+          "priority": 1,
+          "comment": "Кэш"
+        },
+        {
+          "wrong": "шедлер",
+          "correct": "scheduler",
+          "patterns": ["шедлер", "шедулер", "Шедлер", "Шедулер", "шедулировать", "шедулирова[а-я]*"],
+          "priority": 1,
+          "comment": "Планировщик задач"
+        },
+        {
+          "wrong": "билд",
+          "correct": "build",
+          "patterns": ["билд[а-я]*", "Билд[а-я]*", "бил[а-я]*"],
+          "priority": 1,
+          "comment": "Сборка проекта"
+        },
+        {
+          "wrong": "апи",
+          "correct": "API",
+          "patterns": ["апи", "Апи", "АПИ"],
+          "priority": 1,
+          "comment": "Application Programming Interface"
+        }
+      ]
+    }
+  },
+  "usage_notes": {
+    "priority_explanation": {
+      "1": "Критичные термины - всегда заменять (технические термины проекта)",
+      "2": "Важные термины - заменять в большинстве случаев (общие технические термины)",
+      "3": "Низкий приоритет - не использовать автозамену, только по контексту (русские слова могут быть корректны)"
+    },
+    "pattern_syntax": "Регулярные выражения для гибкого поиска вариантов написания",
+    "implementation_strategy": "Рекомендуется комбинация: Whisper initial_prompt + постобработка словарем для 95%+ точности"
+  },
+  "metadata": {
+    "created": "2025-10-31",
+    "updated": "2025-11-16",
+    "based_on": "Транскрипции технических встреч по конструктору и ALFA-задачам (OCRV-205, ALFA-349, OCRV-186)",
+    "files_analyzed": [
+      "OCRV-205 Конструктор. Как формируются конфигурационные файлы xml 31.10.25 16-34-37 — запись.md",
+      "OCRV-205 Конструктор. Как формируются конфигурационные файлы xml 31.10.25 16-52-27 — запись.md",
+      "OCRV-205 Конструктор. Как формируются конфигурационные файлы xml 31.10.25 17-26-48 — запись.md",
+      "OCRV-205 Конструктор. Как формируются конфигурационные файлы xml 31.10.25 17-54-04 — запись.md",
+      "ALFA-349 ДРогов. Использование tooltip-в 15.11.25 13-20-51 — запись.md",
+      "ALFA-349 ДРогов. Темонстрация tooltip на исходящих документах 16.11.25 19-38-31 — запись.md",
+      "OCRV-186 АМакаров. Использование конструктора 13.10.25 17-41-54 — запись.md",
+      "OCRV-186 ДРогов.Экспорт документов-конструктор-и-генератор 15.10.25 11-06-53 — запись.md",
+      "OCRV_313_Права_папки_не_наследуются_В_Кравцов_30_04_2025_14_37_42.md",
+      "OCRV_347_АМакаров_Алгоритм_удаления_версий_документа_при_отключении.md",
+      "OCRV_349_АМакаров_Замечания_к_MR_и_доработки_01_08_2025_14_58_10.md",
+      "OCRV_408_АМакаров_27_10_25_13_32_56_—_запись.md",
+      "OCRV-358_Открытые вопросы_19_08_25_12_06_02_—_запись.md",
+      "OCRV-359 как настроить поиск по подписям 25.09.25 14-08-23 — запись.md",
+      "OCRV-359 Майя.Упрощенный поиск ЭП не работает 14.10.25 09-51-28 — запись.md",
+      "ORCV-376 378 380 работа с багами 25.09.25 14-22-41 — запись.md",
+      "Как запустить задачу по расписанию 08.10.25 13-11-35 — запись.md",
+      "Как создать задачу по расписанию 08.10.25 13-13-27 — запись.md",
+      "Макаров. Настройка билда ANT и Tomcat старт приложения 03.10.25 12-15-00 — запись.md"
+    ],
+    "total_terms": 93,
+    "contexts": 3,
+    "changelog": [
+      {
+        "version": "1.3",
+        "date": "2025-11-16",
+        "changes": "Добавлено 27 новых терминов из транскрипций OCRV-313, OCRV-347, OCRV-349, OCRV-358, OCRV-359, OCRV-376/378/380, задач по расписанию и настройки билда: alias/алиас, mapping/мапинг, versioning/версионирование, content/контент, job/джаба, migration/миграция, transfer/перенос, access rights/права доступа, folder/папка, directory/каталог, signature/подпись, electronic signature/электронная подпись, table component/табличный компонент, search/поиск, scheduled task/задача по расписанию, cron/крона, debug/дебаг, bundle/бандл, settings/сеттинг, dev stand/девстенд, content server/контент сервер, version/версия, preview/предпросмотр, monitoring/мониторинг, logs/логи, identifier/идентификатор, external identifier/внешний идентификатор"
+      },
+      {
+        "version": "1.3",
+        "date": "2025-11-16",
+        "changes": "Добавлено 11 новых терминов из транскрипций ALFA-349 и OCRV-186: apply/применить, package/пакет, card/карточка, tab/вкладка, repository/хранилище, print form/печатная форма, directory structure/структура каталогов, document export/экспорт документов, restart tomcat/перезагрузить томкат"
+      },
+      {
+        "version": "1.1",
+        "date": "2025-11-01",
+        "changes": "Добавлено 18 новых терминов на основе детального анализа транскрипций: initializer/шалайзер, CMP generator, loader, item, child, ID/одичник, parent, render, resolver, lookup, breakpoint, properties варианты, Catalina, inheritance, столбец, строчка"
+      },
+      {
+        "version": "1.0",
+        "date": "2025-10-31",
+        "changes": "Первоначальная версия с базовыми терминами"
+      }
+    ]
+  }
+}
+

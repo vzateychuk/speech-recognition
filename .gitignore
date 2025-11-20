@@ -41,7 +41,19 @@ ENV/
 Thumbs.db
 
 # Project specific
+<<<<<<< Updated upstream
 .data/
+=======
+.data/input/*
+!.data/input/.gitkeep
+.data/output/*
+!.data/output/.gitkeep
+.data/processed/*
+!.data/processed/.gitkeep
+.data/old/
+.data/temp/
+
+>>>>>>> Stashed changes
 models/*
 !models/.gitkeep
 !dicts/.gitkeep
