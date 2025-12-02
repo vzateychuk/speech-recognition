@@ -7,9 +7,5 @@
   "processed_dir": ".data/processed",
   "temp_dir": ".data/temp",
   "sample_rate": 16000,
-<<<<<<< Updated upstream
-  "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac", ".webm"]
-=======
   "supported_formats": [".wav", ".mp3", ".ogg", ".flac", ".m4a", ".wma", ".aac", ".webm", ".mp4"]
->>>>>>> Stashed changes
 }
