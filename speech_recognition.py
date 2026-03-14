@@ -11,6 +11,7 @@ import wave
 import shutil
 import subprocess
 import sys
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from datetime import datetime
 
@@ -34,11 +35,22 @@ except ImportError:
     WHISPER_AVAILABLE = False
 
 
+def _process_file_worker(args):
+    """
+    Воркер для обработки одного файла в отдельном процессе.
+    Принимает (audio_file_path, config_path), возвращает bool (успех/неудача).
+    """
+    audio_file_path, config_path = args
+    transcriber = AudioTranscriber(config_path)
+    return transcriber.process_file(Path(audio_file_path))
+
+
 class AudioTranscriber:
     """Класс для транскрибации аудиофайлов"""
     
     def __init__(self, config_path="config.json"):
         """Инициализация транскрибера с конфигурацией"""
+        self.config_path = config_path
         self.config = self.load_config(config_path)
         self.engine = self.config.get('engine', 'vosk').lower()
         
@@ -414,7 +426,7 @@ class AudioTranscriber:
             end = getattr(segment, 'end', 0.0)
             speaker_change = (
                 prev_end is not None and
-                (start - prev_end) > pause_threshold
+                (start - prev_end) >= pause_threshold
             )
             results.append({
                 'text': text,
@@ -637,11 +649,28 @@ class AudioTranscriber:
         
         print(f"\nНайдено файлов для обработки: {len(audio_files)}")
         
-        # Обработка каждого файла
-        success_count = 0
-        for audio_file in audio_files:
-            if self.process_file(audio_file):
-                success_count += 1
+        workers = self.config.get('parallel_workers', 1)
+        workers = max(1, int(workers))
+        
+        if workers > 1:
+            print(f"Параллельная обработка: {workers} процессов")
+            args_list = [(str(f.absolute()), self.config_path) for f in audio_files]
+            success_count = 0
+            with ProcessPoolExecutor(max_workers=workers) as executor:
+                futures = {executor.submit(_process_file_worker, args): args[0]
+                          for args in args_list}
+                for future in as_completed(futures):
+                    try:
+                        if future.result():
+                            success_count += 1
+                    except Exception as e:
+                        path = futures.get(future, '?')
+                        print(f"Ошибка при обработке {path}: {e}")
+        else:
+            success_count = 0
+            for audio_file in audio_files:
+                if self.process_file(audio_file):
+                    success_count += 1
         
         print(f"\n{'='*60}")
         print(f"Обработка завершена!")
