@@ -401,14 +401,28 @@ class AudioTranscriber:
         
         print(f"Обнаружен язык: {detected_lang} (вероятность: {info.language_probability:.2f})")
         
-        # Собираем текст из сегментов
+        # Собираем сегменты с таймкодами и детекцией смены участника
+        pause_threshold = self.config.get('speaker_change_pause_sec', 0.5)
         results = []
-        full_text = ""
-        for segment in segments:
-            full_text += segment.text + " "
+        prev_end = None
         
-        # Форматируем результат в формат, совместимый с Vosk
-        results.append({'text': full_text.strip()})
+        for segment in segments:
+            text = segment.text.strip()
+            if not text:
+                continue
+            start = getattr(segment, 'start', 0.0)
+            end = getattr(segment, 'end', 0.0)
+            speaker_change = (
+                prev_end is not None and
+                (start - prev_end) > pause_threshold
+            )
+            results.append({
+                'text': text,
+                'start': start,
+                'end': end,
+                'speaker_change': speaker_change
+            })
+            prev_end = end
         
         return results
     
@@ -511,10 +525,22 @@ class AudioTranscriber:
         if not results:
             markdown += "*Текст не распознан*\n"
         else:
-            full_text = " ".join([r.get('text', '') for r in results if r.get('text')])
-            # Применяем постобработку для замены терминов
-            full_text = self.postprocess_text(full_text)
-            markdown += f"{full_text}\n\n"
+            if 'start' in results[0]:
+                for r in results:
+                    text = self.postprocess_text(r.get('text', ''))
+                    if not text:
+                        continue
+                    start_sec = r.get('start', 0)
+                    mm, ss = int(start_sec // 60), int(start_sec % 60)
+                    ts = f"[{mm:02d}:{ss:02d}]"
+                    if r.get('speaker_change'):
+                        markdown += f"{ts} Другой участник: {text}\n\n"
+                    else:
+                        markdown += f"{ts} {text}\n\n"
+            else:
+                full_text = " ".join([r.get('text', '') for r in results if r.get('text')])
+                full_text = self.postprocess_text(full_text)
+                markdown += f"{full_text}\n\n"
         
         return markdown
     
