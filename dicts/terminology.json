@@ -1,0 +1,471 @@
+{
+  "version": "1.2",
+  "description": "Terminology dictionary for Git Proxy project transcription. Use with Whisper (initial_prompt + post-processing) for meetings about git-proxy roadmap, clone/push automation, OSPO workflows.",
+  "contexts": {
+    "git_proxy_project": {
+      "name": "Git Proxy roadmap and OSPO automation",
+      "description": "Technical terms, acronyms, and proper names from git-proxy roadmap meetings",
+      "whisper_prompt": "Technical meeting about Git Proxy project. Terms: Git Proxy, GitProxy, CMP, LMS API, OSPO, SOID, SPDX, DLP, PAT, GitHub, GitLab, FINOS, RE, Jira, Helm, Dockerfiles, npm, shadow profile, shadow approved, city-interest minor, city-interest major, city-moderated, Citadel, read-user, Excalidraw, Mermaid, draw.io, CITI, Rhyddian, Radek, Vladimir, Sergei Khlohlov, NeDB. Infrastructure meeting terms: Git Proxy, Gidbrok, UAT, Mongo, MongoDB, HashiCorp Vault, vault agent, OpenShift, SWIM, SLTN, Tomasz, TJ, Radek, Vlad, LDAP, DEV, CITI rules, DB creds.",
+      "replacements": [
+        {
+          "wrong": "NMS API",
+          "correct": "LMS API",
+          "patterns": ["\\bNMS API\\b", "\\bnms api\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Osbo",
+          "correct": "OSPO",
+          "patterns": ["\\bOsbo\\b", "\\bosbo\\b", "\\bOsbo's\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "SOED",
+          "correct": "SOID",
+          "patterns": ["\\bSOED\\b", "\\bSOED ID\\b", "\\bSoed\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "SOEID",
+          "correct": "SOID",
+          "patterns": ["\\bSOEID\\b", "\\bSOEID\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "push aberration",
+          "correct": "push automation",
+          "patterns": ["\\bpush aberration\\b", "\\bpull aberration\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "pull aberration",
+          "correct": "pull automation",
+          "patterns": ["\\bpull aberration\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "prove license",
+          "correct": "approved license",
+          "patterns": ["\\bprove license\\b", "\\bproved license\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "repower",
+          "correct": "repo",
+          "patterns": ["\\brepower\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Excaligal",
+          "correct": "Excalidraw",
+          "patterns": ["\\bExcaligal\\b", "\\bExcalig\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Braddock",
+          "correct": "Radek",
+          "patterns": ["\\bBraddock\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "get claim",
+          "correct": "git clone",
+          "patterns": ["\\bget claim\\b", "\\bget claim happening\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Get your post",
+          "correct": "Get your boss",
+          "patterns": ["\\bGet your post to approve\\b", "\\bget your post\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "government",
+          "correct": "governance",
+          "patterns": ["\\bgovernment process\\b", "\\bgovernment\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "SPX",
+          "correct": "SPDX",
+          "patterns": ["\\bSPX ID\\b", "\\bSPX\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Got is a trade check",
+          "correct": "Got is a training check",
+          "patterns": ["\\bGot is a trade check\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "gaffin manual",
+          "correct": "gathering manual",
+          "patterns": ["\\bgaffin manual\\b", "\\bgaffing manual\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "shigs",
+          "correct": "checks",
+          "patterns": ["\\bshigs a license\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "end of the row",
+          "correct": "OSPO",
+          "patterns": ["\\bto the end of the row\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "attribute",
+          "correct": "contribute",
+          "patterns": ["\\battribute to an unsourced\\b", "\\battribute to an open source\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "unsourced",
+          "correct": "open source",
+          "patterns": ["\\bunsourced project\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "a radiant",
+          "correct": "a Rhyddian",
+          "patterns": ["\\ba radiant\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Rideon",
+          "correct": "Rhyddian",
+          "patterns": ["\\bRideon\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Rydian",
+          "correct": "Rhyddian",
+          "patterns": ["\\bRydian\\b", "\\bRydian's\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "radian",
+          "correct": "Rhyddian",
+          "patterns": ["\\bradian\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Sergei Khlohl",
+          "correct": "Sergei Khlohlov",
+          "patterns": ["\\bSergei Khlohl\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Finos",
+          "correct": "FINOS",
+          "patterns": ["\\bFinos\\b", "\\bfinos\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Ari",
+          "correct": "RE",
+          "patterns": ["\\bAri's\\b", "\\bfor Ari\\b", "\\bwork for Ari\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "giro",
+          "correct": "Jira",
+          "patterns": ["\\bgiro\\b", "\\bcreate a giro\\b", "\\bfull giro\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "durable",
+          "correct": "Jira board",
+          "patterns": ["\\bthe durable\\b", "\\bgives me the durable\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "really and finally",
+          "correct": "Rhyddian finally",
+          "patterns": ["\\breally and finally\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "the finance project",
+          "correct": "the FINOS project",
+          "patterns": ["\\bthe finance project\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "Madam",
+          "correct": "Vladimir",
+          "patterns": ["\\bMadam\\b", "\\bSorry, Madam\\b", "\\bPlease, Madam\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "work map that we did a brilliant",
+          "correct": "work, the amount that we did with Rhyddian",
+          "patterns": ["\\bwork map that we did a brilliant\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "get hub",
+          "correct": "GitHub",
+          "patterns": ["\\bget hub\\b", "\\bget hub\\.com\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "mpm",
+          "correct": "npm",
+          "patterns": ["\\bmpm\\b", "\\bMPM\\b", "\\bmpm module\\b", "\\bmpm package\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "I don't have a copy",
+          "correct": "I'll copy",
+          "patterns": ["\\bI don't have a copy here we go\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "dock of files",
+          "correct": "docker files",
+          "patterns": ["\\bdock of files\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "the hell and chart",
+          "correct": "Helm chart",
+          "patterns": ["\\bthe hell and chart\\b", "\\ball the hell and chart\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "get love",
+          "correct": "GitLab",
+          "patterns": ["\\bget love\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "get league",
+          "correct": "GitLab",
+          "patterns": ["\\bget league\\b", "\\bGet league\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "got check training",
+          "correct": "git check training",
+          "patterns": ["\\bgot check training\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "we're extent",
+          "correct": "we extend",
+          "patterns": ["\\bwe're extent\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "Rex. Yeah. Sure",
+          "correct": "Now, sure",
+          "patterns": ["\\bRex\\. Yeah\\. Sure\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "done necessary",
+          "correct": "not necessary",
+          "patterns": ["\\bdone necessary\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "cities fixed",
+          "correct": "CITI specific",
+          "patterns": ["\\bcities fixed\\b", "\\bcity specific\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "take a minute on it",
+          "correct": "take a look on it",
+          "patterns": ["\\btake a minute on it\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "I can offer an answer",
+          "correct": "I can often answer",
+          "patterns": ["\\bI can offer an answer\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "sign over the Linux foundation",
+          "correct": "sign up for the Linux foundation",
+          "patterns": ["\\bsign over the Linux foundation\\b"],
+          "priority": 2
+        },
+        {
+          "wrong": "get proxies",
+          "correct": "Git proxy",
+          "patterns": ["\\bget proxies\\b", "\\bhow get proxies\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "city. Git Proxy",
+          "correct": "CITI. Git Proxy",
+          "patterns": ["\\bcity\\. Git Proxy\\b", "\\bcity\\.Git Proxy\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "within city",
+          "correct": "within CITI",
+          "patterns": ["\\bwithin city\\b", "\\bdeployed within city\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "city employee",
+          "correct": "CITI employee",
+          "patterns": ["\\bcity employee\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "city specific",
+          "correct": "CITI specific",
+          "patterns": ["\\bcity specific\\b"],
+          "priority": 1
+        },
+        {
+          "wrong": "city marketplace",
+          "correct": "CITI marketplace",
+          "patterns": ["\\bcity marketplace\\b"],
+          "priority": 1
+        },
+        {"wrong": "Gidbrok", "correct": "Git Proxy", "patterns": ["\\bGidbrok\\b", "\\bGid brok\\b"], "priority": 1},
+        {"wrong": "purity", "correct": "priority", "patterns": ["\\bpurity\\b"], "priority": 1},
+        {"wrong": "Mongo UIT", "correct": "Mongo UAT", "patterns": ["\\bMongo UIT\\b"], "priority": 1},
+        {"wrong": "UIT", "correct": "UAT", "patterns": ["\\bUIT\\b"], "priority": 1},
+        {"wrong": "Mongo class", "correct": "Mongo cluster", "patterns": ["\\bMongo class\\b", "\\bMongo claster\\b"], "priority": 1},
+        {"wrong": "CT rows", "correct": "CITI rules", "patterns": ["\\bCT rows\\b"], "priority": 1},
+        {"wrong": "DBC threads", "correct": "DB creds", "patterns": ["\\bDBC threads\\b"], "priority": 1},
+        {"wrong": "deaf", "correct": "DEV", "patterns": ["\\bdeaf environments\\b", "\\bstart with deaf\\b"], "priority": 1},
+        {"wrong": "swimmer", "correct": "Swim", "patterns": ["\\bswimmer placement\\b", "\\bswimmer\\b"], "priority": 1},
+        {"wrong": "Hasikar", "correct": "HashiCorp", "patterns": ["\\bHasikar vault\\b", "\\bHasikar\\b"], "priority": 1},
+        {"wrong": "Hashiqok", "correct": "HashiCorp", "patterns": ["\\bHashiqok vault\\b", "\\bHashiqok\\b"], "priority": 1},
+        {"wrong": "Gitprox", "correct": "Git Proxy", "patterns": ["\\bGitprox\\b", "\\bGitprox's\\b"], "priority": 1},
+        {"wrong": "plot", "correct": "prod", "patterns": ["\\bon plot\\b", "\\bwe are on plot\\b"], "priority": 1},
+        {"wrong": "low alt balancer", "correct": "load balancer", "patterns": ["\\blow alt balancer\\b"], "priority": 1},
+        {"wrong": "open ship", "correct": "OpenShift", "patterns": ["\\bopen ship\\b"], "priority": 1},
+        {"wrong": "giras", "correct": "epics", "patterns": ["\\bgiras\\b", "\\bseparate giras\\b"], "priority": 1},
+        {"wrong": "disk", "correct": "epic", "patterns": ["\\bthis disk\\b", "\\bassign to this disk\\b"], "priority": 1},
+        {"wrong": "past", "correct": "task", "patterns": ["\\btake this past\\b", "\\bthis past\\b"], "priority": 1},
+        {"wrong": "DJ", "correct": "TJ", "patterns": ["\\bDJ, do you\\b", "\\bDJ\\b"], "priority": 1},
+        {"wrong": "blood", "correct": "Vlad", "patterns": ["\\bblood also\\b", "\\bmeantime blood\\b"], "priority": 1},
+        {"wrong": "radic", "correct": "Radek", "patterns": ["\\bradic said\\b", "\\bwhat's radic\\b"], "priority": 1},
+        {"wrong": "LWT", "correct": "LDAP", "patterns": ["\\bLWT is\\b", "\\bmaybe LWT\\b"], "priority": 1},
+        {"wrong": "radiant decision", "correct": "Rhyddian's decision", "patterns": ["\\bradiant decision\\b", "\\bthe radiant decision\\b"], "priority": 1},
+        {"wrong": "disappeared from city", "correct": "disappeared from CITI", "patterns": ["\\bdisappeared from city\\b"], "priority": 1},
+        {"wrong": "left city", "correct": "left CITI", "patterns": ["\\bleft city\\b"], "priority": 1}
+      ]
+    }
+  },
+  "replacements": {
+    "NMS API": "LMS API",
+    "Osbo": "OSPO",
+    "SOED": "SOID",
+    "SOEID": "SOID",
+    "repower": "repo",
+    "Excaligal": "Excalidraw",
+    "Excalig": "Excalidraw",
+    "Braddock": "Radek",
+    "prove license": "approved license",
+    "proved license": "approved license",
+    "SPX ID": "SPDX ID",
+    "SPX": "SPDX",
+    "push aberration": "push automation",
+    "pull aberration": "pull automation",
+    "get claim": "git clone",
+    "Get your post": "Get your boss",
+    "government process": "governance process",
+    "thir": "their",
+    "eb ": "be ",
+    "autdit": "audit",
+    "trainig": "training",
+    "GigHub": "GitHub",
+    "interlal": "internal",
+    "opperation": "operation",
+    "opperations": "operations",
+    "Clonning": "Cloning",
+    "contribuuting": "contributing",
+    "classifactions": "classifications",
+    "compet": "complete",
+    "get proxy": "Git Proxy",
+    "get pull": "git pull",
+    "get push": "git push",
+    "get clone": "git clone",
+    "a radiant": "a Rhyddian",
+    "Rideon": "Rhyddian",
+    "Rydian": "Rhyddian",
+    "radian": "Rhyddian",
+    "Sergei Khlohl": "Sergei Khlohlov",
+    "Finos": "FINOS",
+    "finos": "FINOS",
+    "giro": "Jira",
+    "get hub": "GitHub",
+    "mpm": "npm",
+    "MPM": "npm",
+    "dock of files": "docker files",
+    "the hell and chart": "Helm chart",
+    "get love": "GitLab",
+    "get league": "GitLab",
+    "got check training": "git check training",
+    "done necessary": "not necessary",
+    "cities fixed": "CITI specific",
+    "get proxies": "Git proxy",
+    "we're extent": "we extend",
+    "really and finally": "Rhyddian finally",
+    "the finance project": "the FINOS project",
+    "work map that we did a brilliant": "work, the amount that we did with Rhyddian",
+    "I can offer an answer": "I can often answer",
+    "sign over the Linux foundation": "sign up for the Linux foundation",
+    "take a minute on it": "take a look on it",
+    "city. Git Proxy": "CITI. Git Proxy",
+    "within city": "within CITI",
+    "city employee": "CITI employee",
+    "city marketplace": "CITI marketplace",
+    "Gidbrok": "Git Proxy",
+    "purity": "priority",
+    "Mongo UIT": "Mongo UAT",
+    "UIT": "UAT",
+    "Mongo class": "Mongo cluster",
+    "claster": "cluster",
+    "CT rows": "CITI rules",
+    "DBC threads": "DB creds",
+    "deaf": "DEV",
+    "swimmer": "Swim",
+    "Hasikar": "HashiCorp",
+    "Hashiqok": "HashiCorp",
+    "Gitprox": "Git Proxy",
+    "plot": "prod",
+    "low alt balancer": "load balancer",
+    "open ship": "OpenShift",
+    "giras": "epics",
+    "disk": "epic",
+    "past": "task",
+    "DJ": "TJ",
+    "blood": "Vlad",
+    "radic": "Radek",
+    "LWT": "LDAP",
+    "radiant decision": "Rhyddian's decision",
+    "disappeared from city": "disappeared from CITI",
+    "left city": "left CITI",
+    "EPM": "EPAM",
+    "ePOM": "EPAM",
+    "Entropic": "Anthropic",
+    "capilot": "Copilot",
+    "task a pilot": "ask Copilot",
+    "Clotsonnet": "Claude Sonnet",
+    "друпало": "Drupal",
+    "друпал": "Drupal",
+    "друпала": "Drupal",
+    "бипейт": "BePaid",
+    "джеквери": "jQuery",
+    "полотешного": "платёжного",
+    "полотешный": "платёжный",
+    "костомное": "кастомное",
+    "костомные": "кастомные",
+    "Human Enzylub": "Human in the loop",
+    "моря dB": "MariaDB",
+    "НГРОК": "ngrok"
+  }
+}
